@@ -66,7 +66,7 @@ whatsappClient.on('message', async (msg) => {
                 if (command === '/info') {
                     return await axios({
                         method: 'get',
-                        url: 'http://localhost:80/info',
+                        url: `http://localhost:${process.env.PORT}/info`,
                         data: {
                             participant: sender,
                             groupId: msg.id.participant !== null ? msg.from : null
@@ -130,7 +130,7 @@ whatsappClient.on('message', async (msg) => {
                     const code = msg.body.split(" ")[1].toUpperCase();
                     return await axios({
                         method: 'post',
-                        url: 'http://localhost:80/claim',
+                        url: `http://localhost:${process.env.PORT}/claim`,
                         data: {
                             code,
                             msg,
