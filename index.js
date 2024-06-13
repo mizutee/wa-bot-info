@@ -138,6 +138,10 @@ whatsappClient.on('message', async (msg) => {
                     })
                 }
 
+                if (command === '/help') {
+                    msg.reply(`Here are lists of commands that you can use:\n1. /register <nickname>\n    - Example: /register AzureLen318\n2. /info\n    - Used to check your balance, nickname, and other personal data.\n3. /csn <amount>\n    - Example: /csn 500\n    - Commands to play csn, with amount 500WLS, or any other amount that you want.\n    - The game will start once someone input the same amount, and you will be invited to new GroupChat to play!\n4. /queue\n    - Used to check all games queue(s), yours also included!\n5. /cancel\n    - Used to cancel all of your game lists.\n    - If you cancel, the amount of WLS will be returned back to your balance, so don't worry!\n6. /claim <code>\n    - Example: /claim GIVEAWAY\n    - Used to claim code whenever admin shared a giveaway codes.\n    - Each player can only claim once!\n7. /reme <amount>\n    - Example: /reme 500\n    - Commands to play reme, with amount 500WLS, or any other amount that you want.\n    - The game will start once someone host you with same amount, and you will be invited to new GroupChat to play!\n8. /host <amount>\n    - Example: /host 500\n    - Used to host reme game.\n    - CAN ONLY BE USED FOR THOSE WHO ARE HOSTER!\n9. /go\n    - Used to start game, inside the PlayRoom.\n10. /sfl\n    - Used to do Spin For Life.\n11. /spin\n    - Used to spin when you play either CSN or REME.\n12. /wd <amount> <worldName>\n    - Example: /wd 1000 MYWORLD\n    - Used to withdraw your balance\n`)
+                }
+
                 if (command === '/gift') {
                     const senderIsAdmin = isAdmin(adminList, sender)
                     if (!senderIsAdmin) {
