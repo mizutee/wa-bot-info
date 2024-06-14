@@ -53,7 +53,7 @@ whatsappClient.on('message', async (msg) => {
                 if (command === '/register') {
                     return await axios({
                         method: 'post',
-                        url: 'http://localhost:80/register',
+                        url: `http://localhost:${process.env.PORT}/register`,
                         data: {
                             msg
                         }
