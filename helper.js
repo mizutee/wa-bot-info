@@ -159,23 +159,6 @@ async function checkWinner(updatedData, ongoingPlayRoom, updatedRoomInfo) {
     return res;
 }
 
-// async function checkSpin() {
-//     const playRoom = await db.collection('PlayRoom').find({status : {$ne: 'Finished'}}).toArray();
-
-//     playRoom.forEach(async (el) => {
-//         if (el.updatedAt < newDateNow() && el.spinTemp.length === 1) {
-//             const randomNumber = randomizeNumber();
-//             el.participants.forEach(async (el2) => {
-//                 if (el2.participant !== el.spinTemp[0].participant) {
-//                     if (randomNumber > el.spinTemp[0].number) {
-//                         await db.collection('PlayRoom').updateOne({_id: el._id}, {$set: {}})
-//                     }
-//                 }
-//             })
-//         }
-//     })
-// }
-
 async function countWinRate(participant) {
     const data = await db.collection('PlayRoom').find().toArray();
     let temp = [];
@@ -197,27 +180,12 @@ async function countWinRate(participant) {
         }
     })
     winrate = (winCount / temp.length) * 100;
+    isNaN(winrate) ? winrate = 0 : winrate = winrate;
 
     return {
         winrate: `${winrate}%`,
         totalGame: temp.length
     }
 }
-
-const timezoneOffset = 7 * 60 * 60 * 1000; // GMT+7 offset in milliseconds
-
-const res = async () => {
-    const result = await db.collection('IncomeTeam').find().toArray();
-    let income = 0;
-    result.forEach(el => {
-        if (el.createdAt > new Date(newDateNow().getTime() - (1000 * 60 * 30))) {
-            income += el.debit
-        }
-    })
-    console.log(income);
-    return result
-}
-
-res();
 
 module.exports = { countWinRate, checkWinner, allGameFinished, checkOngoingPlayRoom, checkRoomInfo, bothPlayersInputLife, randomizeNumber, bothPlayersSFL, stillHasLifes, checkUsernameRegister, isAdmin, newDateNow, checkHoster, senderNumber }
