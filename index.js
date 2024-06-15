@@ -32,12 +32,8 @@ whatsappClient.on('ready', async () => {
 whatsappClient.on('message', async (msg) => {
     try {
         if (msg.from !== 'status@broadcast') {
-            const contact = await msg.getContact();
             const command = msg.body.split(" ")[0].toLowerCase()
             const chat = await whatsappClient.getChatById(msg.from);
-            const ongoingPlayRoom = await checkOngoingPlayRoom(sender);
-            const finishedPlayRoom = await allGameFinished(msg.from);
-            // console.log(ongoingPlayRoom)
             let adminList = [];
             chat.participants?.forEach(el => {
                 if (el.isAdmin || el.isSuperAdmin) {
