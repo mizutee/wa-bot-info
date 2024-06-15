@@ -182,6 +182,7 @@ whatsappClient.on('message', async (msg) => {
 
             if (msg.from === `6281372390237@c.us`) {
                 if (command === '/cancelgame') {
+                    console.log('masuk kesini gak?')
                     const gameId = msg.body.split(" ")[1];
                     const gameInfo = await db.collection('PlayRoom').findOne({ _id: new ObjectId(String(gameId)) });
                     if (gameInfo.status === 'Finished') {
