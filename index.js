@@ -32,9 +32,7 @@ whatsappClient.on('ready', async () => {
 whatsappClient.on('message', async (msg) => {
     try {
         if (msg.from !== 'status@broadcast') {
-            console.log(msg);
             const contact = await msg.getContact();
-            const sender = senderNumber(msg);
             const command = msg.body.split(" ")[0].toLowerCase()
             const chat = await whatsappClient.getChatById(msg.from);
             const ongoingPlayRoom = await checkOngoingPlayRoom(sender);
@@ -182,16 +180,14 @@ whatsappClient.on('message', async (msg) => {
             }
 
             if (msg.from === `6281372390237@c.us`) {
-                console.log('dapet pesan dr wa')
                 if (command === '/cancelgame') {
-                    console.log('masuk kesini gak?')
                     const gameId = msg.body.split(" ")[1];
                     const gameInfo = await db.collection('PlayRoom').findOne({ _id: new ObjectId(String(gameId)) });
                     if (gameInfo.status === 'Finished') {
                         return msg.reply(`This game is already finished!`);
                     }
                     gameInfo.participants.forEach(async (el) => {
-                        const result = await db.collection('User').findOneAndUpdate({ participant: el.participant }, {$inc: {balance: +gameInfo.totalAmount / 2}});
+                        const result = await db.collection('User').findOneAndUpdate({ participant: el.participant }, {$inc: {balance: +gameInfo.totalAmount / 2}}, {returnDocument: 'after'});
                         await msg.reply(`${el.username} with ${el.participant} number balance has been restored to ${result.balance}`)
                     })
                 }
