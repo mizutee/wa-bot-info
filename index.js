@@ -183,18 +183,13 @@ whatsappClient.on('message', async (msg) => {
                     if (gameInfo.status === 'Finished') {
                         return msg.reply(`This game is already finished!`);
                     }
-                    let updateField = 0;
                     await session.withTransaction(async () => {
                         gameInfo.participants.forEach(async (el) => {
                             const result = await db.collection('User').findOneAndUpdate({ participant: el.participant }, { $inc: { balance: +gameInfo.totalAmount / 2 } }, { returnDocument: 'after', session });
                             await msg.reply(`${el.username} with ${el.participant} number balance has been restored to ${result.balance}`)
-                            updateField++;
                         })
-
-                        if (updateField === 2) {
-                            await db.collection('PlayRoom').deleteOne({ _id: new ObjectId(String(gameId)) }, { session })
-                            await msg.reply(`The game with id ${gameId} has been removed from database!`)
-                        }
+                        await db.collection('PlayRoom').deleteOne({ _id: new ObjectId(String(gameId)) }, { session })
+                        await msg.reply(`The game with ID ${gameId} has been deleted from database!`)
                     })
                 }
             }
