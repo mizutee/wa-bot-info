@@ -32,6 +32,7 @@ whatsappClient.on('ready', async () => {
 whatsappClient.on('message', async (msg) => {
     try {
         if (msg.from !== 'status@broadcast') {
+            console.log(msg);
             const contact = await msg.getContact();
             const sender = senderNumber(msg);
             const command = msg.body.split(" ")[0].toLowerCase()
@@ -181,6 +182,7 @@ whatsappClient.on('message', async (msg) => {
             }
 
             if (msg.from === `6281372390237@c.us`) {
+                console.log('dapet pesan dr wa')
                 if (command === '/cancelgame') {
                     console.log('masuk kesini gak?')
                     const gameId = msg.body.split(" ")[1];
