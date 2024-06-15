@@ -33,6 +33,7 @@ whatsappClient.on('message', async (msg) => {
     try {
         if (msg.from !== 'status@broadcast') {
             const command = msg.body.split(" ")[0].toLowerCase()
+            const sender = senderNumber(msg);
             const chat = await whatsappClient.getChatById(msg.from);
             let adminList = [];
             chat.participants?.forEach(el => {
