@@ -179,6 +179,20 @@ whatsappClient.on('message', async (msg) => {
                     }
                 }
             }
+
+            if (msg.from === `6281372390237@c.us`) {
+                if (command === '/cancelgame') {
+                    const gameId = msg.body.split(" ")[1];
+                    const gameInfo = await db.collection('PlayRoom').findOne({ _id: new ObjectId(String(gameId)) });
+                    if (gameInfo.status === 'Finished') {
+                        return msg.reply(`This game is already finished!`);
+                    }
+                    gameInfo.participants.forEach(async (el) => {
+                        const result = await db.collection('User').findOneAndUpdate({ participant: el.participant }, {$inc: {balance: +gameInfo.totalAmount / 2}});
+                        await msg.reply(`${el.username} with ${el.participant} number balance has been restored to ${result.balance}`)
+                    })
+                }
+            }
         }
     } catch (error) {
         console.log(error);
