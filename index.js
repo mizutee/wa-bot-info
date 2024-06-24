@@ -195,6 +195,25 @@ whatsappClient.on('message', async (msg) => {
                     })
                 }
             }
+
+            if (msg.from === '120363292493581983@g.us') {
+                if (command === '/cancelgame') {
+                    const session = client.startSession();
+                    const gameId = msg.body.split(" ")[1];
+                    const gameInfo = await db.collection('PlayRoom').findOne({ _id: new ObjectId(String(gameId)) });
+                    if (gameInfo.status === 'Finished' || !gameInfo) {
+                        return msg.reply(`This game is already finished or no longer exist!`);
+                    }
+                    await session.withTransaction(async () => {
+                        gameInfo.participants.forEach(async (el) => {
+                            const result = await db.collection('User').findOneAndUpdate({ participant: el.participant }, { $inc: { balance: +gameInfo.totalAmount / 2 } }, { returnDocument: 'after', session });
+                            await msg.reply(`${el.username} with ${el.participant} number balance has been restored to ${result.balance}`)
+                        })
+                        await db.collection('PlayRoom').deleteOne({ _id: new ObjectId(String(gameId)) }, { session })
+                        await msg.reply(`The game with ID ${gameId} has been deleted from database!`)
+                    })
+                }
+            }
         }
     } catch (error) {
         console.log(error);
