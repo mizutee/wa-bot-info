@@ -32,6 +32,7 @@ whatsappClient.on('ready', async () => {
 whatsappClient.on('message', async (msg) => {
     try {
         if (msg.from !== 'status@broadcast') {
+            console.log(msg.from)
             const command = msg.body.split(" ")[0].toLowerCase()
             const sender = senderNumber(msg);
             const chat = await whatsappClient.getChatById(msg.from);
