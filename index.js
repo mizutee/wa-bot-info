@@ -200,7 +200,7 @@ whatsappClient.on('message', async (msg) => {
                     const session = client.startSession();
                     const gameId = msg.body.split(" ")[1];
                     const gameInfo = await db.collection('PlayRoom').findOne({ _id: new ObjectId(String(gameId)) });
-                    if (gameInfo.status === 'Finished' || !gameInfo) {
+                    if (!gameInfo || gameInfo.status === 'Finished') {
                         return msg.reply(`This game is already finished or no longer exist!`);
                     }
                     await session.withTransaction(async () => {
