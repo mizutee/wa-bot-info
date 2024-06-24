@@ -209,6 +209,10 @@ whatsappClient.on('message', async (msg) => {
                             const result = await db.collection('User').findOneAndUpdate({ participant: el.participant }, { $inc: { balance: +gameInfo.totalAmount / 2 } }, { returnDocument: 'after', session });
                             await msg.reply(`${el.username} with ${el.participant} number balance has been restored to ${result.balance}`)
                         })
+                        let res1 = await db.collection('User').findOneAndUpdate({ participant: gameInfo.participants[0].participant }, { $inc: { balance: +gameInfo.totalAmount / 2 } }, { returnDocument: 'after', session })
+                        await msg.reply(`${gameInfo.participants[0].username} with +${gameInfo.participants[0].participant.split("@")[0]} number balance has been restored to ${res1.balance}`)
+                        let res2 = await db.collection('User').findOneAndUpdate({ participant: gameInfo.participants[1].participant }, { $inc: { balance: +gameInfo.totalAmount / 2 } }, { returnDocument: 'after', session })
+                        await msg.reply(`${gameInfo.participants[1].username} with +${gameInfo.participants[1].participant.split("@")[0]} number balance has been restored to ${res2.balance}`)
                         await db.collection('PlayRoom').deleteOne({ _id: new ObjectId(String(gameId)) }, { session })
                         await msg.reply(`The game with ID ${gameId} has been deleted from database!`)
                     })
